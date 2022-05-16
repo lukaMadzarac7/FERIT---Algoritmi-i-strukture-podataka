@@ -1,32 +1,32 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-#define N 50
 
-int StackPointer1 = 0 , StackPointer2 = 0;
-int A1[N], A2[N];
-int X1 = 0, X2 = 0;
+int stogpok1 = 0; 
+int stogpok2 = 0;
+int A1[50];
+int A2[50];
+int X1 = 0;
+int X2 = 0;
 
-int rekpovrh(int n, int m)
-
-{
-    if (m > n)
+int rekurzivno(int n, int m){
+    if (m > n){
         return 0;
-    if (m == 0 || m == n)
+    }
+    if (m == 0 || m == n){
         return 1;
+    }
  
-    // Recur
-    return rekpovrh(n - 1, m - 1)
-           + rekpovrh(n - 1, m);
+    return rekurzivno(n - 1, m - 1) + rekurzivno(n - 1, m);
 }
 
 
-void stogPOVRH(int n, int m)
+void stog(int n, int m)
 {
 	pushSTOG1(n);
 	pushSTOG2(m);
 	int POVRH = 0;
-	while (StackPointer1 != 0)
+	while (stogpok1 != 0)
 	{
 		n = popSTOG1();
 		m = popSTOG2();
@@ -47,70 +47,73 @@ void stogPOVRH(int n, int m)
 
 void pushSTOG1(int k)
 {
-	if (StackPointer1 == N)
+	if (stogpok1 == 50)
 	{
 		printf("STOG PUN!");
 	}
 	else
 	{
-		StackPointer1 += 1;
-		A1[StackPointer1] = k;
+		stogpok1 += 1;
+		A1[stogpok1] = k;
 	}
 }
 
 void pushSTOG2(int k)
 {
-	if (StackPointer2 == N)
+	if (stogpok2 == 50)
 	{
 		printf("STOG PUN!");
 	}
 	else
 	{
-		StackPointer2 += 1;
-		A2[StackPointer2] = k;
+		stogpok2 += 1;
+		A2[stogpok2] = k;
 	}
 }
 
 int popSTOG1()
 {
-	if (StackPointer1 == 0)
+	if (stogpok1 == 0)
 	{
 		printf("Illegal POP. Aborting!");
 		return 0;
 	}
 	else
 	{
-		X1 = A1[StackPointer1];
-		StackPointer1 -= 1;
+		X1 = A1[stogpok1];
+		stogpok1 -= 1;
 		return X1;
 	}
 }
 
 int popSTOG2()
 {
-	if (StackPointer2 == 0)
+	if (stogpok2== 0)
 	{
 		printf("Illegal POP. Aborting!");
 		return 0;
 	}
 	else
 	{
-		X2 = A2[StackPointer2];
-		StackPointer2 -= 1;
+		X2 = A2[stogpok2];
+		stogpok2 -= 1;
 		return X2;
 	}
 
 }
 int main()
 {
-	int t1 = 0, t2 = 0, t3 = 0, t4 = 0;
-
+	int t1 = 0;
+	int t2 = 0; 
+	int t3 = 0;
+	int t4 = 0;
 	t1 = clock();
-	printf("Rekurzivno: %d\n\n", rekpovrh(12, 6));
+	printf("Preko rekurzivne funkcije: %d\n\n", rekurzivno(32,16));
 	t2 = clock();
 	t3 = clock();
-	stogPOVRH(12, 6);
+	stog(32, 16);
 	t4 = clock();
-	printf("Vrijeme trajanja rekurzije: %d[ms]\n Vrijeme trajanja Stoga: %d[ms]\n", t2 - t1, t4 - t3);
+	printf("Rekurzija u micro-sekundama: %d\n ", t2 - t1);
+	printf("Stog u micro-sekundama: %d\n", t4 - t3);
 	return 0;
 }
